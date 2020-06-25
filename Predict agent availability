@@ -1,0 +1,51 @@
+import pytest
+
+def test_agent_more():
+    cust_no = 5
+    agent_no = 6
+    resolve_time = 10
+    waiting_time = 20
+    assert find_agent_availability(cust_no, agent_no, resolve_time, waiting_time) == 0
+
+def test_agent_cust_equal_1():
+        cust_no = 5
+        agent_no = 5
+        resolve_time = 10
+        waiting_time = 20
+        assert find_agent_availability(cust_no, agent_no, resolve_time, waiting_time) == 10
+
+def test_agent_cust_equal_2():
+    cust_no = 5
+    agent_no = 5
+    resolve_time = 10
+    waiting_time = 6
+    assert find_agent_availability(cust_no, agent_no, resolve_time, waiting_time) == "abandon"
+
+def test_agent_less_1():
+    cust_no = 10
+    agent_no = 5
+    resolve_time = 10
+    waiting_time = 30
+    assert find_agent_availability(cust_no, agent_no, resolve_time, waiting_time) == 20
+def test_agent_less_2():
+    cust_no = 10
+    agent_no = 5
+    resolve_time = 10
+    waiting_time = 18
+    assert find_agent_availability(cust_no, agent_no, resolve_time, waiting_time) == "abandon"
+
+def find_agent_availability(cust_no, agent_no, resolve_time, waiting_time):
+    if cust_no < agent_no:
+        return 0
+    elif cust_no == agent_no:
+        if waiting_time > resolve_time:
+            return resolve_time
+        else:
+            return "abandon"
+    else:
+        batches_needed = int(cust_no/agent_no)
+        print("batches needed: ", batches_needed)
+        if batches_needed*resolve_time <= waiting_time:
+            return batches_needed*resolve_time
+        else:
+            return "abandon"
